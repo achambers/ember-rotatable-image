@@ -5,7 +5,7 @@ import {
 
 moduleForComponent('rotatable-image', 'RotatableImageComponent', {
   // specify the other units that are required for this test
-  // needs: ['component:foo', 'helper:bar']
+  needs: ['component:image-tag', 'component:image-actions']
 });
 
 test('it renders', function() {

@@ -3,7 +3,7 @@ import {
   test
 } from 'ember-qunit';
 
-moduleForComponent('image-tag', 'ImageTagComponent', {
+moduleForComponent('image-actions', 'ImageActionsComponent', {
   // specify the other units that are required for this test
   // needs: ['component:foo', 'helper:bar']
 });
@@ -12,9 +12,7 @@ test('it renders', function() {
   expect(2);
 
   // creates the component instance
-  var component = this.subject({
-    eventEmitter: {on: function() {}}
-  });
+  var component = this.subject();
   equal(component._state, 'preRender');
 
   // appends the component to the page
