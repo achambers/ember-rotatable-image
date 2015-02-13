@@ -1,33 +1,24 @@
 import Em from 'ember';
+import DomElement from '../mixins/dom-element';
 
-export default Em.Component.extend({
+export default Em.Component.extend(DomElement, {
   tagName: ['img'],
   classNames: ['rotatable-image'],
   attributeBindings: ['src', 'alt', 'style'],
-  height: 0,
-  width: 0,
-  virtualHeight: 0,
-  virtualWidth: 0,
+  virtualHeight: Em.computed.oneWay('height'),
+  virtualWidth: Em.computed.oneWay('width'),
   degrees: 0,
   scale: 1,
   isOriginalOrientation: true,
 
   onDidInsertElement: function() {
+    var self         = this;
     var eventEmitter = this.get('eventEmitter');
-    var element = this.get('element');
-    var self    = this;
+    var element      = this.get('element');
 
     element.onload = function() {
       Em.run(self, function() {
-        var height = element.offsetHeight;
-        var width  = element.offsetWidth;
-
-        this.setProperties({
-          height: height,
-          virtualHeight: height,
-          width: width,
-          virtualWidth: width
-        });
+        this._setHeightAndWidth.call(this);
       });
     }
 
@@ -41,13 +32,6 @@ export default Em.Component.extend({
     var scale   = this.get('scale');
 
     return 'transform: rotate(' + degrees + 'deg) scale(' + scale + ');';
-  }),
-
-  aspect: Em.computed('height', 'width', function() {
-    var height = this.get('height');
-    var width  = this.get('width');
-
-    return (width / height).toFixed(2);
   }),
 
   _rotate: function(degrees) {
