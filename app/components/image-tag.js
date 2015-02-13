@@ -13,6 +13,7 @@ export default Em.Component.extend({
   isOriginalOrientation: true,
 
   onDidInsertElement: function() {
+    var eventEmitter = this.get('eventEmitter');
     var element = this.get('element');
     var self    = this;
 
@@ -29,9 +30,13 @@ export default Em.Component.extend({
         });
       });
     }
+
+    eventEmitter.on('rotate', this, function(degrees) {
+      this._rotate.call(this, degrees);
+    });
   }.on('didInsertElement'),
 
-  style: Em.computed('degrees', function() {
+  style: Em.computed('scale', 'degrees', function() {
     var degrees = this.get('degrees');
     var scale   = this.get('scale');
 
@@ -45,12 +50,8 @@ export default Em.Component.extend({
     return (width / height).toFixed(2);
   }),
 
-  click: function() {
-    this._rotate.apply(this);
-  },
-
-  _rotate: function() {
-    this.incrementProperty('degrees', 90);
+  _rotate: function(degrees) {
+    this.incrementProperty('degrees', degrees);
     this.toggleProperty('isOriginalOrientation');
   },
 

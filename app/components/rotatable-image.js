@@ -26,5 +26,15 @@ export default Em.Component.extend({
     var width  = this.get('width');
 
     return (width / height).toFixed(2);
-  })
+  }),
+
+  actions: {
+    onRotateImageRight: function() {
+      this.trigger('rotate', 90);
+    },
+
+    onRotateImageLeft: function() {
+      this.trigger('rotate', -90);
+    }
+  }
 });

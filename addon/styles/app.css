@@ -1,4 +1,5 @@
 .rotatable-image-container {
+  position: relative;
   height: 100%;
   width: 100%;
   text-align: center;
@@ -11,4 +12,15 @@
   max-width: 100%;
   vertical-align: middle;
   transition: all 0.3s;
+}
+
+.image-actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background-color: yellow;
+  text-align: left;
+  line-height: normal;
 }
