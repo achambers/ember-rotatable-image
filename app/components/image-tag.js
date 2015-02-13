@@ -4,24 +4,45 @@ export default Em.Component.extend({
   tagName: ['img'],
   classNames: ['rotatable-image'],
   attributeBindings: ['src', 'alt', 'style'],
+  height: 0,
+  width: 0,
+  virtualHeight: 0,
+  virtualWidth: 0,
   degrees: 0,
+  scale: 1,
   isOriginalOrientation: true,
 
   onDidInsertElement: function() {
     var element = this.get('element');
+    var self    = this;
 
-    //element.onload = function() {
-      //Em.run(this, function() {
-        //console.log(element.offsetWidth);
-        //console.log(element.offsetHeight);
-      //});
-    //}
+    element.onload = function() {
+      Em.run(self, function() {
+        var height = element.offsetHeight;
+        var width  = element.offsetWidth;
+
+        this.setProperties({
+          height: height,
+          virtualHeight: height,
+          width: width,
+          virtualWidth: width
+        });
+      });
+    }
   }.on('didInsertElement'),
 
   style: Em.computed('degrees', function() {
     var degrees = this.get('degrees');
+    var scale   = this.get('scale');
 
-    return 'transform: rotate(' + degrees + 'deg) scale(1);';
+    return 'transform: rotate(' + degrees + 'deg) scale(' + scale + ');';
+  }),
+
+  aspect: Em.computed('height', 'width', function() {
+    var height = this.get('height');
+    var width  = this.get('width');
+
+    return (width / height).toFixed(2);
   }),
 
   click: function() {
@@ -29,14 +50,43 @@ export default Em.Component.extend({
   },
 
   _rotate: function() {
-    var amountToRotate = this._amountToRotate.apply(this);
-
-    this.incrementProperty('degrees', amountToRotate);
+    this.incrementProperty('degrees', 90);
+    this.toggleProperty('isOriginalOrientation');
   },
 
-  _amountToRotate: function() {
-    var degrees = this.get('degrees');
+  _recalculateVirtualHeightAndWidth: function() {
+    var height = this.get('virtualHeight');
+    var width  = this.get('virtualWidth');
 
-    return degrees === 270 ? -270 : 90;
-  }
+    this.setProperties({
+      virtualHeight: width,
+      virtualWidth: height
+    });
+  }.observes('isOriginalOrientation'),
+
+  _recalculateScale: function() {
+    var aspect          = this.get('aspect');
+    var height          = this.get('virtualHeight');
+    var width           = this.get('virtualWidth');
+
+    var containerAspect = this.get('containerAspect');
+    var containerHeight = this.get('containerHeight');
+    var containerWidth  = this.get('containerWidth');
+
+    var isOriginalOrientation = this.get('isOriginalOrientation');
+
+    var scale;
+
+    if (aspect > containerAspect) {
+      scale = (containerWidth / width).toFixed(2);
+    } else {
+      scale = (containerHeight / height).toFixed(2);
+    }
+
+    //if (isOriginalOrientation) {
+      //scale = 1 / scale;
+    //}
+
+    this.set('scale', scale);
+  }.observes('virtualHeight', 'virtualWidth')
 });

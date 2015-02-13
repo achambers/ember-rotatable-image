@@ -10,4 +10,5 @@
   max-height: 100%;
   max-width: 100%;
   vertical-align: middle;
+  transition: all 0.3s;
 }
