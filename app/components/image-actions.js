@@ -1,15 +1,2 @@
-import Ember from 'ember';
-
-export default Ember.Component.extend({
-  classNames: ['image-actions'],
-
-  actions: {
-    rotateRight: function() {
-      this.sendAction('rotateRightAction');
-    },
-
-    rotateLeft: function() {
-      this.sendAction('rotateLeftAction');
-    }
-  }
-});
+import Component from 'ember-rotatable-image/components/image-actions';
+export default Component;
