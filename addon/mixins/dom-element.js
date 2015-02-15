@@ -8,13 +8,6 @@ export default Em.Mixin.create({
     this._setHeightAndWidth.call(this);
   }.on('didInsertElement'),
 
-  aspect: Em.computed('height', 'width', function() {
-    var height = this.get('height');
-    var width  = this.get('width');
-
-    return (width / height).toFixed(2);
-  }),
-
   _setHeightAndWidth: function() {
     var element = this.get('element');
     var height  = element.offsetHeight;
