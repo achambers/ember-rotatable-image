@@ -5,10 +5,10 @@ export default Em.Component.extend(DomElement, {
   classNames: ['rotatable-image-container'],
   attributeBindings: ['style'],
 
-  style: Em.computed('containerHeight', function() {
+  style: Em.computed('height', function() {
     var height = this.get('height');
 
-    return 'line-height: ' + height + 'px;';
+    return 'line-height: ' + (height - 1) + 'px;';
   }),
 
   actions: {

@@ -5,8 +5,6 @@ export default Em.Component.extend(DomElement, {
   tagName: ['img'],
   classNames: ['rotatable-image'],
   attributeBindings: ['src', 'alt', 'style'],
-  virtualHeight: Em.computed.oneWay('height'),
-  virtualWidth: Em.computed.oneWay('width'),
   degrees: 0,
   scale: 1,
   isOriginalOrientation: true,
@@ -39,39 +37,20 @@ export default Em.Component.extend(DomElement, {
     this.toggleProperty('isOriginalOrientation');
   },
 
-  _recalculateVirtualHeightAndWidth: function() {
-    var height = this.get('virtualHeight');
-    var width  = this.get('virtualWidth');
-
-    this.setProperties({
-      virtualHeight: width,
-      virtualWidth: height
-    });
-  }.observes('isOriginalOrientation'),
-
-  _recalculateScale: function() {
-    var aspect          = this.get('aspect');
-    var height          = this.get('virtualHeight');
-    var width           = this.get('virtualWidth');
-
-    var containerAspect = this.get('containerAspect');
-    var containerHeight = this.get('containerHeight');
-    var containerWidth  = this.get('containerWidth');
-
+  _onOrientationChanged: Em.observer('isOriginalOrientation', function() {
     var isOriginalOrientation = this.get('isOriginalOrientation');
-
+    var maxHeight = this.get('containerHeight');
+    var maxWidth = this.get('containerWidth');
+    var originalHeight = this.get('height');
+    var originalWidth = this.get('width');
     var scale;
 
-    if (aspect > containerAspect) {
-      scale = (containerWidth / width).toFixed(2);
+    if (isOriginalOrientation) {
+      scale = 1;
     } else {
-      scale = (containerHeight / height).toFixed(2);
+      scale = Math.min(maxHeight / originalWidth, maxWidth / originalHeight);
     }
 
-    //if (isOriginalOrientation) {
-      //scale = 1 / scale;
-    //}
-
     this.set('scale', scale);
-  }.observes('virtualHeight', 'virtualWidth')
+  })
 });
