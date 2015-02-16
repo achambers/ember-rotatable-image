@@ -17,6 +17,7 @@ export default Em.Component.extend(DomElement, {
     element.onload = function() {
       Em.run(self, function() {
         this._setHeightAndWidth.call(this);
+        this._scale.call(this);
       });
     };
 
@@ -37,7 +38,7 @@ export default Em.Component.extend(DomElement, {
     this.toggleProperty('isOriginalOrientation');
   },
 
-  _onOrientationChanged: Em.observer('isOriginalOrientation', function() {
+  _scale: function() {
     var isOriginalOrientation = this.get('isOriginalOrientation');
     var maxHeight = this.get('containerHeight');
     var maxWidth = this.get('containerWidth');
@@ -46,11 +47,15 @@ export default Em.Component.extend(DomElement, {
     var scale;
 
     if (isOriginalOrientation) {
-      scale = 1;
+      scale = Math.min(maxHeight / originalHeight, maxWidth / originalWidth);
     } else {
       scale = Math.min(maxHeight / originalWidth, maxWidth / originalHeight);
     }
 
     this.set('scale', scale);
+  },
+
+  _onOrientationChanged: Em.observer('isOriginalOrientation', function() {
+    this._scale.call(this);
   })
 });
