@@ -14,10 +14,6 @@ export default Em.Component.extend(DomElement, {
   actions: {
     onRotateImageRight: function() {
       this.trigger('rotate', 90);
-    },
-
-    onRotateImageLeft: function() {
-      this.trigger('rotate', -90);
     }
   }
 });
