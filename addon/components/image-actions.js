@@ -6,10 +6,6 @@ export default Ember.Component.extend({
   actions: {
     rotateRight: function() {
       this.sendAction('rotateRightAction');
-    },
-
-    rotateLeft: function() {
-      this.sendAction('rotateLeftAction');
     }
   }
 });
