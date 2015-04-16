@@ -28,28 +28,29 @@
 .rotate-actions {
   width: 100%;
   height: 100%;
-  opacity: 0;
-  transition: opacity 0.1s linear;
 }
 
-.rotatable-image:hover + .image-actions .rotate-actions {
+.rotatable-image:hover + .image-actions .rotate-actions .rotate {
   opacity: 0.5;
-}
-
-.rotate-actions:hover {
-  opacity: 1;
 }
 
 .rotate {
   width: 150px;
   height: 150px;
   background-size: contain;
+  background-color: Transparent;
+  border: 0;
   cursor: pointer;
   transform: rotate(85deg);
   transition: transform 0.4s;
+  opacity: 0;
+  transition: opacity 0.1s linear;
+  transition: transform 0.3s;
 }
 
+.rotate:focus,
 .rotate:hover {
+  opacity: 1;
   transform: rotate(100deg);
 }
 
