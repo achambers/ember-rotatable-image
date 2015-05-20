@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import {
   moduleForComponent,
   test
@@ -18,4 +19,18 @@ test('it renders', function() {
   // appends the component to the page
   this.append();
   equal(component._state, 'inDOM');
+});
+
+test('css classes are updated when loading is set', function() {
+  expect(2);
+
+  var component = this.subject();
+
+  equal(this.$().attr('class'), 'ember-view rotatable-image-container loading');
+
+  Ember.run(function() {
+    component.set('loading', false);
+  });
+
+  equal(this.$().attr('class'), 'ember-view rotatable-image-container');
 });
